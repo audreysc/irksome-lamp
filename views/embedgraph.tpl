@@ -17,7 +17,9 @@
       <br>
       <a href="/plot"><button class="btn btn-default">Back</button></a>
       <br><br>
-      <iframe id="igraph" src={{plot_url}} width="900" height="450" seamless="seamless" scrolling="no"></iframe>
+      <iframe id="igraph_place" src={{plot_url_place}} width="900" height="450" seamless="seamless" scrolling="no"></iframe>
+      <br><br>
+      <iframe id="igraph_gaps" src={{plot_url_gaps}} width="900" height="450" seamless="seamless" scrolling="no"></iframe>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>

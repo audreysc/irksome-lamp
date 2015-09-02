@@ -270,7 +270,8 @@ class Data:
             if (runner.name == x):
                 #print runner.runs
                 return runner
- 
+
+    #TODO: Plot_gaps, runner_gaps, and graph_gaps should not be in Data class 
     def plot_gaps(self, *args):
         runner_list = []
         if (args > 0):
@@ -312,7 +313,8 @@ class Data:
                 return trace
         if (found == False):
             print selected + 'was not found.'
-    
+
+#TODO: Move this to another file and generalize   
 def plot_now(x, y):
     print x
     print y
@@ -421,7 +423,8 @@ def daily_ranking(all_runners, run_data, data_by_day):
     for runner in all_runners:
         runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: int(t[0])))
     return all_runners, day_ranks
-
+# TODO: Move all graphing functions to one file
+# TODO: When there are multiple graphs, data should only get read in once
 # Can't use Data() because class is named that
 # Bar Graph that plots frequencies of rest duration.
 def plotgaps(ID, NAME):

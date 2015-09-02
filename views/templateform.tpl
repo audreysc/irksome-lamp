@@ -23,7 +23,7 @@
               </div>
               <h3>Name</h3>
               <div class="form-group" "col-md-2">
-                <input type="string" name="NAME" class="form-control" placeholder="Race ID">
+                <input type="string" name="NAME" class="form-control" placeholder="Your Name">
               </div>
             </td>
           </tr>
