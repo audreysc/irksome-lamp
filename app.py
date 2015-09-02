@@ -28,8 +28,14 @@ def submit():
     # grab data from form
     ID = request.forms.get('ID')
     NAME = request.forms.get('NAME')
-    all_runners = d.start_graph_race(ID)
-    plot_url = p.graph_ranks_runner(all_runners, NAME)
+    #all_runners = d.start_graph_race(ID)
+    #plot_url = p.graph_ranks_runner(all_runners, NAME)
+    graph = d.plotgaps(ID, NAME)
+    trace = graph[0]
+    layout = graph[1]
+    data=Data([trace])
+    fig = Figure(data=data,layout=layout)
+    plot_url = py.plot(fig, filename='test', auto_open=False)
     return template('embedgraph', title='Plot.ly Graph', plot_url=str(plot_url))
 
 if __name__ == '__main__':

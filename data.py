@@ -63,6 +63,7 @@ class Runner:
         self.mpd = 0 #miles/total days
         self.rpd = 0 #runs/total days
         self.by_day = {}
+        self.gap_dict = {}
 
     def add_run(self, run):
         self.runs.append(run)
@@ -269,6 +270,57 @@ class Data:
             if (runner.name == x):
                 #print runner.runs
                 return runner
+ 
+    def plot_gaps(self, *args):
+        runner_list = []
+        if (args > 0):
+            runner_list = args
+        else:
+            runner_list = self.runner_names
+        for runner in self.runners:
+            if runner.name in runner_list:
+                self.runner_gaps(runner)
+    
+    def runner_gaps(self, runner):
+        print runner.name
+        gaps = []
+        #gap_dict = dict.fromKeys([range(10)])
+        sorted(runner.runs, key=lambda run: run.date)
+        print runner.runs
+        for i in range(0, len(runner.runs)-1):
+            current_run = runner.runs[i]
+            next_run = runner.runs[i+1]
+            rest = (next_run.date - current_run.date).days
+            gaps.append(rest)
+        gap_keys = (sorted(set(gaps)))
+        print gap_keys
+        #runner.gap_dict = dict.fromkeys(sorted(set(gaps)), None)
+        for k in gap_keys:
+            runner.gap_dict[k] = gaps.count(k)
+            print str(k) + ': ' + str(runner.gap_dict[k])
+    
+    def graph_gaps(self, selected): 
+        found = False
+        runner = ''
+        for r in self.runners:
+            if (selected == r.name):
+                runner = r
+                found = True
+                x = dict.keys(runner.gap_dict)
+                y = dict.values(runner.gap_dict)
+                trace = plot_now(x, y)
+                return trace
+        if (found == False):
+            print selected + 'was not found.'
+    
+def plot_now(x, y):
+    print x
+    print y
+    trace = Bar(
+        x=x,
+        y=y
+    )
+    return trace
 
 def main(**kwargs):
     newFile = False
@@ -370,6 +422,25 @@ def daily_ranking(all_runners, run_data, data_by_day):
         runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: int(t[0])))
     return all_runners, day_ranks
 
+# Can't use Data() because class is named that
+# Bar Graph that plots frequencies of rest duration.
+def plotgaps(ID, NAME):
+    #run_data = race_by_id(ID)
+    run_data = from_csv()
+    run_data.plot_gaps(NAME)
+    trace = run_data.graph_gaps(NAME)
+    #data=Data([trace])
+    layout=Layout(
+        title='Frequency of rest length',
+        xaxis=XAxis(
+            title='Rest Length',
+        ),
+        yaxis=YAxis(
+            title='Count',
+        ),
+    )
+    #fig = Figure(data=data, layout=layout)
+    return trace, layout
 
 def start_graph_race_name(ID, NAME):
     print NAME
