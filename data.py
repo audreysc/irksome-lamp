@@ -3,14 +3,14 @@
 Created on Sat Jan 10 14:43:59 2015
 @author: Audrey
 """
-import datetime
 import csv
 import urllib2
 import numpy as np
-import plotly.plotly as py
-from plotly.graph_objs import *
-import plotly.tools as tls
+import datetime
 from collections import OrderedDict
+
+from config import config_data
+import places as p
 
 class Race:
     
@@ -136,9 +136,7 @@ class Run:
         self.name = name.lower()
         self.date = date
         self.distance = distance
-        
-        #make these point to the class objects not strings
-             
+         
     def make_date(self):        
         date_time = self.date.split(' ')
         date_time = filter(lambda x: x.strip(' ')!='', date_time)
@@ -193,7 +191,7 @@ class Data:
         self.race_names = []
         self.runners = []
         self.runner_names = []
-        
+
     def read_data(self, **kwargs):
         #read from URL
         for key, value in kwargs.items():
@@ -219,10 +217,7 @@ class Data:
                 self.runs.append(this_run)
                 self.people_list(this_run)
                 self.race_list(this_run)
-                #print this_run.toString()
             print 'done reading in file'
-            #print 'Races: \n' + self.print_list(self.race_names)
-            #print 'Runners: \n' + self.print_list(self.runner_names)
 
     def race_runners(self):
         for race in self.races:
@@ -333,33 +328,18 @@ def main(**kwargs):
             url = value
         if key == 'newFile':
             newFile = value
-    try:
-        credentials = tls.get_credentials_file()
-    except:
-        ## except credentials error and print for them to enter something
-        credentials = {}
-        credentials['username'] = raw_input("Plotly Username: ") ## get username
-        credentials['api_key'] = raw_input("api key: ") ### get password
-    try:
-        py.sign_in(credentials['username'], credentials['api_key']) 
-    except:
-        print "was not able to sign into plotly"
-        print "let's read some data"        
     #data object
     t = Data(newFile, True)
     #read from file
     t.read_data(**kwargs)
     return t
 
-def race_by_id(ID):
-    t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id={ID}'.format(ID=ID))
-    return t
-def race_by_id(ID):
-    t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id={ID}'.format(ID=ID))
-    return t
-
-def tri_tech():
-    t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id=215')
+def collect_data(**kwargs):
+    """Create data url with query arguments from ***kwargs"""
+    url = config_data['url']
+    for key,value in kwargs.items():
+        url = url + '?{key}={value}'.format(key=key,value=value)
+    t = main(newFile=True, dataFile='submissions.csv', url=url)
     return t
 
 def from_csv():
@@ -423,31 +403,12 @@ def daily_ranking(all_runners, run_data, data_by_day):
     for runner in all_runners:
         runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: int(t[0])))
     return all_runners, day_ranks
-# TODO: Move all graphing functions to one file
-# TODO: When there are multiple graphs, data should only get read in once
-# Can't use Data() because class is named that
-# Bar Graph that plots frequencies of rest duration.
-def plotgaps(ID, NAME):
-    #run_data = race_by_id(ID)
-    run_data = from_csv()
-    run_data.plot_gaps(NAME)
-    trace = run_data.graph_gaps(NAME)
-    #data=Data([trace])
-    layout=Layout(
-        title='Frequency of rest length',
-        xaxis=XAxis(
-            title='Rest Length',
-        ),
-        yaxis=YAxis(
-            title='Count',
-        ),
-    )
-    #fig = Figure(data=data, layout=layout)
-    return trace, layout
 
+# TODO: Move all graphing functions to one file
+# Bar Graph that plots frequencies of rest duration.
 def start_graph_race_name(ID, NAME):
-    print NAME
-    run_data = race_by_id(ID)
+    run_data = collect_data(race_id=ID)
+    #run_data = from_csv()
     runner = run_data.get_runner(NAME)
     d = iter_dates(run_data)
     all_runners = d[0]
@@ -455,10 +416,14 @@ def start_graph_race_name(ID, NAME):
     dr = daily_ranking(all_runners, run_data, data_by_day)
     all_runners = dr[0]
     day_ranks = dr[1]
-    return all_runners
+    plot_url_place = p.graph_ranks_runner(all_runners, NAME) 
+    run_data.plot_gaps(NAME)
+    trace = run_data.graph_gaps(NAME)
+    plot_url_gaps = p.plotgaps(trace)
+    return plot_url_place, plot_url_gaps
 
 def start_graph_race(ID):
-    run_data = race_by_id(ID)
+    run_data = collect_data(race_id=ID)
     d = iter_dates(run_data)
     all_runners = d[0]
     data_by_day = d[1]
@@ -467,12 +432,10 @@ def start_graph_race(ID):
     day_ranks = dr[1]
     return all_runners
 
-def start_graph():
-    run_data = from_csv()
-    d = iter_dates(run_data)
-    all_runners = d[0]
-    data_by_day = d[1]
-    dr = daily_ranking(all_runners, run_data, data_by_day)
-    all_runners = dr[0]
-    day_ranks = dr[1]
-    return all_runners
+def form_to_data(**kwargs):
+    """Get necessary data based on form entries"""
+    return
+
+def data_to_graph():
+    """Construct graphs that return urls"""
+    return

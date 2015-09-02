@@ -68,3 +68,20 @@ def graph_ranks_runner(all_runners, name):
     return plot_url
 #all_runners = d.start_graph_race('215')
 #graph_ranks(all_runners)
+
+def plotgaps(trace):
+    #run_data = race_by_id(ID)
+    #run_data = from_csv()
+    data=Data([trace])
+    layout=Layout(
+        title='Frequency of rest length',
+        xaxis=XAxis(
+            title='Rest Length',
+        ),
+        yaxis=YAxis(
+            title='Count',
+        ),
+    )
+    fig = Figure(data=data, layout=layout)
+    plot_url = py.plot(fig, filename='Gaps', auto_open=False)
+    return plot_url
