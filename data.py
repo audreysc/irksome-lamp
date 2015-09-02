@@ -8,7 +8,8 @@ import urllib2
 import numpy as np
 import datetime
 from collections import OrderedDict
-
+import plotly.plotly as py
+from plotly.graph_objs import *
 from config import config_data
 import places as p
 
