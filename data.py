@@ -3,16 +3,14 @@
 Created on Sat Jan 10 14:43:59 2015
 @author: Audrey
 """
-
 import datetime
 import csv
-import numpy as np
-import matplotlib.pyplot as plt
 import urllib2
-import graph_functions as g
+import numpy as np
 import plotly.plotly as py
 from plotly.graph_objs import *
 import plotly.tools as tls
+from collections import OrderedDict
 
 class Race:
     
@@ -299,6 +297,12 @@ def main(**kwargs):
     t.read_data(**kwargs)
     return t
 
+def race_by_id(ID):
+    t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id={ID}'.format(ID=ID))
+    return t
+def race_by_id(ID):
+    t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id={ID}'.format(ID=ID))
+    return t
 
 def tri_tech():
     t = main(newFile=True, dataFile='submissions.csv', url='http://racery.com/api/list_submissions?race_id=215')
@@ -342,11 +346,10 @@ def iter_dates(run_data):
             else:
                 get_prev = str(d - 1)
                 runner.by_day[ds] = runner.by_day[get_prev] if get_prev in runner.by_day.keys() else 0
-        for runner in all_runners:
-            data_by_day[ds] = list({runner.name: runner.by_day[ds]} for runner in all_runners)
-            data_by_day[ds] = reduce(lambda x,y: dict(x.items() + y.items()), data_by_day[ds])
+        #for runner in all_runners:
+        data_by_day[ds] = list({runner.name: runner.by_day[ds]} for runner in all_runners)
+        data_by_day[ds] = reduce(lambda x,y: dict(x.items() + y.items()), data_by_day[ds])
     return all_runners, data_by_day
-
     
 def daily_ranking(all_runners, run_data, data_by_day):
     data_min = min(run_data.runs, key=lambda x:x.date).date
@@ -362,8 +365,33 @@ def daily_ranking(all_runners, run_data, data_by_day):
             name = day_ranks[ds][ra]
             runner = filter(lambda a: a.name==name, all_runners)
             runner[0].by_day[ds] = ra
-            print runner
+    ## Order runner dictionaries
+    for runner in all_runners:
+        runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: int(t[0])))
     return all_runners, day_ranks
+
+
+def start_graph_race_name(ID, NAME):
+    print NAME
+    run_data = race_by_id(ID)
+    runner = run_data.get_runner(NAME)
+    d = iter_dates(run_data)
+    all_runners = d[0]
+    data_by_day = d[1]
+    dr = daily_ranking(all_runners, run_data, data_by_day)
+    all_runners = dr[0]
+    day_ranks = dr[1]
+    return all_runners
+
+def start_graph_race(ID):
+    run_data = race_by_id(ID)
+    d = iter_dates(run_data)
+    all_runners = d[0]
+    data_by_day = d[1]
+    dr = daily_ranking(all_runners, run_data, data_by_day)
+    all_runners = dr[0]
+    day_ranks = dr[1]
+    return all_runners
 
 def start_graph():
     run_data = from_csv()
