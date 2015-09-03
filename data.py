@@ -9,13 +9,11 @@ import urllib2
 import numpy as np
 import datetime
 from collections import OrderedDict
-import plotly.plotly as py
-from plotly.graph_objs import *
+#import plotly.plotly as py
+#from plotly.graph_objs import *
 import places as p
 
 racery_base_url = os.environ["BASE_URL"]
-#with open('data.json') as config_file:
-#    config_data = json.load(config_file)
 
 class Race:
     
@@ -309,20 +307,10 @@ class Data:
                 found = True
                 x = dict.keys(runner.gap_dict)
                 y = dict.values(runner.gap_dict)
-                trace = plot_now(x, y)
+                trace = p.plot_bar(x, y)
                 return trace
         if (found == False):
             print selected + 'was not found.'
-
-#TODO: Move this to another file and generalize   
-def plot_now(x, y):
-    print x
-    print y
-    trace = Bar(
-        x=x,
-        y=y
-    )
-    return trace
 
 def main(**kwargs):
     newFile = False

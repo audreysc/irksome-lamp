@@ -85,3 +85,12 @@ def plotgaps(trace):
     fig = Figure(data=data, layout=layout)
     plot_url = py.plot(fig, filename='Gaps', auto_open=False)
     return plot_url
+
+def plot_bar(x, y):
+    print x
+    print y
+    trace = Bar(
+        x=x,
+        y=y
+    )
+    return trace
