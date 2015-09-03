@@ -1,5 +1,5 @@
 import os
-from bottle import run, template, get, post, request
+from bottle import run, template, get, post, request, redirect
 
 import plotly.plotly as py
 from plotly.graph_objs import *
@@ -9,15 +9,8 @@ import places as p
 from collections import OrderedDict
 import json
 
-# For development
-# grab username and key from config/data file
-#with open('data.json') as config_file:
-#    config_data = json.load(config_file)
-#username = config_data["user"]
-#key = config_data["key"]
-#racery_base_url = config_data["url"]
-
-# For production
+# Development: Set at bottom of $ENV/bin/activate
+# Production: Set in dokku app config
 username = os.environ["PLOTLY_USER"]
 key = os.environ["PLOTLY_KEY"]
 

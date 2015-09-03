@@ -341,7 +341,7 @@ def main(**kwargs):
 
 def collect_data(**kwargs):
     """Create data url with query arguments from ***kwargs"""
-    url = config_data['url']
+    url = racery_base_url
     for key,value in kwargs.items():
         url = url + '?{key}={value}'.format(key=key,value=value)
     t = main(newFile=True, dataFile='submissions.csv', url=url)
