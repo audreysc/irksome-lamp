@@ -3,6 +3,7 @@
 Created on Sat Jan 10 14:43:59 2015
 @author: Audrey
 """
+import os
 import csv
 import urllib2
 import numpy as np
@@ -12,8 +13,9 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 import places as p
 
-with open('data.json') as config_file:
-    config_data = json.load(config_file)
+racery_base_url = os.environ["BASE_URL"]
+#with open('data.json') as config_file:
+#    config_data = json.load(config_file)
 
 class Race:
     

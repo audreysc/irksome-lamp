@@ -10,12 +10,15 @@ from collections import OrderedDict
 #import json
 
 # grab username and key from config/data file
-with open('data.json') as config_file:
-    config_data = json.load(config_file)
-username = config_data["user"]
-key = config_data["key"]
-racery_base_url = config_data["url"]
+#with open('data.json') as config_file:
+#    config_data = json.load(config_file)
+#username = config_data["user"]
+#key = config_data["key"]
+#racery_base_url = config_data["url"]
 
+username = os.environ["PLOTLY_USER"]
+key = os.environ["PLOTLY_KEY"]
+#racery_base_url = os.environ["BASE_URL"]
 py.sign_in(username, key)
 # add your username and api key
 
