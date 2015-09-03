@@ -10,8 +10,10 @@ import datetime
 from collections import OrderedDict
 import plotly.plotly as py
 from plotly.graph_objs import *
-from config import config_data
 import places as p
+
+with open('data.json') as config_file:
+    config_data = json.load(config_file)
 
 class Race:
     

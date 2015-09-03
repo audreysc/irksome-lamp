@@ -4,15 +4,14 @@ from bottle import run, template, get, post, request
 import plotly.plotly as py
 from plotly.graph_objs import *
 
-from config import config_data
 import data as d
 import places as p
 from collections import OrderedDict
 #import json
 
 # grab username and key from config/data file
-#with open('data.json') as config_file:
-#    config_data = json.load(config_file)
+with open('data.json') as config_file:
+    config_data = json.load(config_file)
 username = config_data["user"]
 key = config_data["key"]
 racery_base_url = config_data["url"]
