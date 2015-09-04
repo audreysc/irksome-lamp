@@ -29,12 +29,13 @@ def graph_ranks(all_runners):
     plot_url = py.plot(fig, filename='test')
     return plot_url
 
-def graph_ranks_runner(all_runners, name):
+def graph_ranks_runner(all_runners, names):
     traces = []
     for runner in all_runners:
         x = runner.by_day.values()
         y = runner.by_day.keys()
-        if runner.name == name:
+        if runner.name in names:
+            print runner.name
             traces.append(Scatter(
                 x=x,
                 y=y,
@@ -53,7 +54,7 @@ def graph_ranks_runner(all_runners, name):
             ))
     data = Data(traces)
     layout = Layout(
-        title='Place by Day for {name}'.format(name=name),
+        title='Place by Day for {name}'.format(name=" , ".join(names)),
         xaxis=XAxis(
             autorange=True,
             title='Place (first through last)',
@@ -69,10 +70,10 @@ def graph_ranks_runner(all_runners, name):
 #all_runners = d.start_graph_race('215')
 #graph_ranks(all_runners)
 
-def plotgaps(trace):
+def plotgaps(traces):
     #run_data = race_by_id(ID)
     #run_data = from_csv()
-    data=Data([trace])
+    data=Data(traces)
     layout=Layout(
         title='Frequency of rest length',
         xaxis=XAxis(
@@ -86,11 +87,12 @@ def plotgaps(trace):
     plot_url = py.plot(fig, filename='Gaps', auto_open=False)
     return plot_url
 
-def plot_bar(x, y):
+def plot_bar(x, y, name):
     print x
     print y
     trace = Bar(
         x=x,
-        y=y
+        y=y,
+        name=name
     )
     return trace

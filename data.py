@@ -96,7 +96,6 @@ class Runner:
                 count += 1
                 run_distances.append(run.distance)
         self.median = np.median(run_distances)
-        print self.median
         self.count = count
         self.total = miles
         self.avg = miles/count
@@ -285,7 +284,6 @@ class Data:
         gaps = []
         #gap_dict = dict.fromKeys([range(10)])
         sorted(runner.runs, key=lambda run: run.date)
-        print runner.runs
         for i in range(0, len(runner.runs)-1):
             current_run = runner.runs[i]
             next_run = runner.runs[i+1]
@@ -307,7 +305,7 @@ class Data:
                 found = True
                 x = dict.keys(runner.gap_dict)
                 y = dict.values(runner.gap_dict)
-                trace = p.plot_bar(x, y)
+                trace = p.plot_bar(x, y, r.name)
                 return trace
         if (found == False):
             print selected + 'was not found.'
@@ -364,16 +362,13 @@ def iter_dates(run_data):
         today_runners = by_date(run_data,day).runners
         for runner in all_runners:
             r = filter(lambda a: a.name==runner.name, today_runners)
-            print r
             if len(r)>0:
                 (r[0]).make_data()
                 day_total = r[0].total
                 runner.by_day[ds] = r[0].total
-                print r[0].total
             else:
                 get_prev = str(d - 1)
                 runner.by_day[ds] = runner.by_day[get_prev] if get_prev in runner.by_day.keys() else 0
-        #for runner in all_runners:
         data_by_day[ds] = list({runner.name: runner.by_day[ds]} for runner in all_runners)
         data_by_day[ds] = reduce(lambda x,y: dict(x.items() + y.items()), data_by_day[ds])
     return all_runners, data_by_day
@@ -399,20 +394,23 @@ def daily_ranking(all_runners, run_data, data_by_day):
 
 # TODO: Move all graphing functions to one file
 # Bar Graph that plots frequencies of rest duration.
-def start_graph_race_name(ID, NAME):
+def start_graph_race_name(ID, NAMES):
     run_data = collect_data(race_id=ID)
     #run_data = from_csv()
-    runner = run_data.get_runner(NAME)
+    #runner = run_data.get_runner(NAME)
     d = iter_dates(run_data)
     all_runners = d[0]
     data_by_day = d[1]
     dr = daily_ranking(all_runners, run_data, data_by_day)
     all_runners = dr[0]
     day_ranks = dr[1]
-    plot_url_place = p.graph_ranks_runner(all_runners, NAME) 
-    run_data.plot_gaps(NAME)
-    trace = run_data.graph_gaps(NAME)
-    plot_url_gaps = p.plotgaps(trace)
+    plot_url_place = p.graph_ranks_runner(all_runners, NAMES) 
+    traces = []
+    for NAME in NAMES:
+        run_data.plot_gaps(NAME)
+        trace = run_data.graph_gaps(NAME)
+        traces.append(trace)
+    plot_url_gaps = p.plotgaps(traces)
     return plot_url_place, plot_url_gaps
 
 def start_graph_race(ID):

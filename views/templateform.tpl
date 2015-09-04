@@ -21,9 +21,13 @@
               <div class="form-group" "col-md-2">
                 <input type="string" name="ID" class="form-control" placeholder="Race ID">
               </div>
-              <h3>Name</h3>
+              <h3>Compare Runners</h3>
+              <p>Enter atleast one name below to compare runners in this race. (Not sure what to do? Start with your own nickname!)</p>
               <div class="form-group" "col-md-2">
-                <input type="string" name="NAME" class="form-control" placeholder="Your Name">
+                <input type="string" name="NAME1" class="form-control" placeholder="Nickname">
+                <input type="string" name="NAME2" class="form-control" placeholder="Nickname">
+                <input type="string" name="NAME3" class="form-control" placeholder="Nickname">
+                <input type="string" name="NAME4" class="form-control" placeholder="Nickname">
               </div>
             </td>
           </tr>
