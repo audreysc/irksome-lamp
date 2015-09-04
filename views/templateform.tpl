@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Get Your Race Stats</h1>
+      <h1>Get Your Racery Stats</h1>
       <form role="form" method="post" action="/plot">
         <table>
             <td>
