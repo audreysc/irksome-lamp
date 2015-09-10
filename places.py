@@ -7,14 +7,15 @@ from collections import OrderedDict
 def graph_ranks(all_runners):
     traces = []
     for runner in all_runners:
-        x = runner.by_day.values()
-        y = runner.by_day.keys()
+        # switched these
+        y = runner.by_day.values()
+        x = runner.by_day.keys()
         traces.append(Scatter(
             x=x,
             y=y,
             mode='lines+markers',
             name=runner.name,
-            text=x,
+            text=y,
         ))
     data = Data(traces)
     layout = Layout( 
@@ -32,8 +33,8 @@ def graph_ranks(all_runners):
 def graph_ranks_runner(all_runners, names):
     traces = []
     for runner in all_runners:
-        x = runner.by_day.values()
-        y = runner.by_day.keys()
+        y = runner.by_day.values()
+        x = runner.by_day.keys()
         if runner.name in names:
             print runner.name
             traces.append(Scatter(
@@ -41,7 +42,7 @@ def graph_ranks_runner(all_runners, names):
                 y=y,
                 mode='lines+markers',
                 name=runner.name,
-                text=x,
+                text=y,
             ))
         else:
             traces.append(Scatter(
@@ -49,7 +50,7 @@ def graph_ranks_runner(all_runners, names):
                 y=y,
                 mode='lines+markers',
                 name=runner.name,
-                text=x,
+                text=y,
                 visible=False,
             ))
     data = Data(traces)
@@ -57,11 +58,11 @@ def graph_ranks_runner(all_runners, names):
         title='Place by Day for {name}'.format(name=" , ".join(names)),
         xaxis=XAxis(
             autorange=True,
-            title='Place (first through last)',
+            title='Days from start of race',
         ),
         yaxis=YAxis(
             autorange=True,
-            title='Days from start of race',
+            title='Place (first through last)',
         ),
     )
     fig = Figure(data=data, layout=layout)
