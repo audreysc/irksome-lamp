@@ -58,7 +58,7 @@ def graph_ranks_runner(all_runners, names):
         title='Place by Day for {name}'.format(name=" , ".join(names)),
         xaxis=XAxis(
             autorange=True,
-            title='Days from start of race',
+            title='Date',
         ),
         yaxis=YAxis(
             autorange=True,

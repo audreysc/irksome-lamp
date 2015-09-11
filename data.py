@@ -358,7 +358,12 @@ def iter_dates(run_data):
     date_range = (data_max - data_min).days
     for d in range(date_range):
         day = data_min + datetime.timedelta(days=d)
-        ds = str(d)
+        day_time= datetime.datetime(day.year,day.month,day.day)
+        ds = str(day_time)
+        #ds = str(d)
+        #ds = str(day)
+        #ds = str(day.days)
+        print ds
         today_runners = by_date(run_data,day).runners
         for runner in all_runners:
             r = filter(lambda a: a.name==runner.name, today_runners)
@@ -379,8 +384,16 @@ def daily_ranking(all_runners, run_data, data_by_day):
     date_range = (data_max - data_min).days
     day_ranks = {}
     for d in range(date_range):
+        # use day instead of ds for the date keys
+        # day should be the date time object to string
         day = data_min + datetime.timedelta(days=d)
-        ds = str(d)
+        day_time= datetime.datetime(day.year,day.month,day.day)
+        ds = str(day_time)
+        print day
+        #ds = str(d)
+        #ds = str(day)
+        #ds = str(day.days)
+        print ds
         ranks = sorted(data_by_day[ds], key=lambda x : data_by_day[ds][x], reverse=True)
         day_ranks[ds] = dict(list((i+1, ranks[i]) for i in range(len(ranks))))
         for ra in day_ranks[ds].keys():
@@ -388,8 +401,9 @@ def daily_ranking(all_runners, run_data, data_by_day):
             runner = filter(lambda a: a.name==name, all_runners)
             runner[0].by_day[ds] = ra
     ## Order runner dictionaries
+    fmt = '%Y-%m-%d %H:%M:%S'
     for runner in all_runners:
-        runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: int(t[0])))
+        runner.by_day = OrderedDict(sorted(runner.by_day.items(), key=lambda t: datetime.datetime.strptime(t[0], fmt).toordinal()))
     return all_runners, day_ranks
 
 # TODO: Move all graphing functions to one file
