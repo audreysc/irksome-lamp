@@ -3,6 +3,7 @@ import datetime
 import plotly.plotly as py
 from plotly.graph_objs import *
 from collections import OrderedDict
+import copy
 
 def graph_ranks(all_runners):
     traces = []
@@ -54,8 +55,13 @@ def graph_ranks_runner(all_runners, names):
                 visible=False,
             ))
     data = Data(traces)
+    names_list = copy.copy(names)
+    final_name = ""
+    if len(names_list)>1:
+        final_name = names_list.pop()
+        final_name = " and " + final_name
     layout = Layout(
-        title='Place by Day for {name}'.format(name=" , ".join(names)),
+        title='Place by Day for {name}'.format(name=" , ".join(names_list)) + final_name,
         xaxis=XAxis(
             autorange=True,
             title='Date',
@@ -76,9 +82,9 @@ def plotgaps(traces):
     #run_data = from_csv()
     data=Data(traces)
     layout=Layout(
-        title='Frequency of rest length',
+        title='Frequency of Rest Length',
         xaxis=XAxis(
-            title='Rest Length',
+            title='Rest Length (Days)',
         ),
         yaxis=YAxis(
             title='Count',

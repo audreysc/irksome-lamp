@@ -360,10 +360,6 @@ def iter_dates(run_data):
         day = data_min + datetime.timedelta(days=d)
         day_time= datetime.datetime(day.year,day.month,day.day)
         ds = str(day_time)
-        #ds = str(d)
-        #ds = str(day)
-        #ds = str(day.days)
-        print ds
         today_runners = by_date(run_data,day).runners
         for runner in all_runners:
             r = filter(lambda a: a.name==runner.name, today_runners)
@@ -389,11 +385,6 @@ def daily_ranking(all_runners, run_data, data_by_day):
         day = data_min + datetime.timedelta(days=d)
         day_time= datetime.datetime(day.year,day.month,day.day)
         ds = str(day_time)
-        print day
-        #ds = str(d)
-        #ds = str(day)
-        #ds = str(day.days)
-        print ds
         ranks = sorted(data_by_day[ds], key=lambda x : data_by_day[ds][x], reverse=True)
         day_ranks[ds] = dict(list((i+1, ranks[i]) for i in range(len(ranks))))
         for ra in day_ranks[ds].keys():
