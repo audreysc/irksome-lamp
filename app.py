@@ -5,7 +5,7 @@ import plotly.plotly as py
 from plotly.graph_objs import *
 
 import data as d
-import places as p
+import plotting as p
 from collections import OrderedDict
 import json
 

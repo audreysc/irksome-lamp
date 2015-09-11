@@ -22,7 +22,7 @@
                 <input type="string" name="ID" class="form-control" placeholder="Race ID">
               </div>
               <h3>Compare Runners</h3>
-              <p>Enter atleast one name below to compare runners in this race. (Not sure what to do? Start with your own nickname!)</p>
+              <p>Enter at least one nickname below to compare runners in this race. Not sure what to do? Start with your own nickname (you are @nickname on racery).</p>
               <div class="form-group" "col-md-2">
                 <input type="string" name="NAME1" class="form-control" placeholder="Nickname">
                 <input type="string" name="NAME2" class="form-control" placeholder="Nickname">

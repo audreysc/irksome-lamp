@@ -9,9 +9,7 @@ import urllib2
 import numpy as np
 import datetime
 from collections import OrderedDict
-#import plotly.plotly as py
-#from plotly.graph_objs import *
-import places as p
+import plotting as p
 
 racery_base_url = os.environ["BASE_URL"]
 
